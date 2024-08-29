@@ -1,0 +1,22 @@
+```diff
+@@ -469,? +?,? @@
+         if modname in sys.modules:
+             # the module is already loaded, let's use it
+             module = sys.modules[modname]
+-            if name in ("int", "float", "complex"):
+-                # those are builtin types in numpy, and are not defined as such
+-                # before numpy 1.16, so we want to use the corresponding python
+-                # builtin instead
+-                return getattr(module, name + "64")
++            if name in ("int", "float", "complex", "long"):
++                # those are builtin types in numpy, and are not defined as such
++                # before numpy 1.16, so we want to use the corresponding python
++                # builtin instead
++                return getattr(module, name + "64")
++            if name == "long":
++                # np.long is deprecated, use python builtin instead
++                return long
+             return getattr(module, name)
+         # else
+         node = self._build_module(modname, package=package, node=node)
+```
