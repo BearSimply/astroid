@@ -1,3 +1,11 @@
+            if name in ("int", "float", "complex", "long"):
+                # those are builtin types in numpy, and are not defined as such
+                # before numpy 1.16, so we want to use the corresponding python
+                # builtin instead
+                return getattr(module, name + "64")
+            if name == "long":
+                # np.long is deprecated, use python builtin instead
+                return long
 # Licensed under the LGPL: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html
 # For details: https://github.com/pylint-dev/astroid/blob/main/LICENSE
 # Copyright (c) https://github.com/pylint-dev/astroid/blob/main/CONTRIBUTORS.txt
