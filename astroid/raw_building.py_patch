@@ -1,0 +1,19 @@
+```diff
+@@ -469,? +?,? @@
+         if modname in sys.modules:
+             # the module has already been loaded, so we can't reload it
+             # in that case, we use the trick of importing the module
+-            # in a fresh environment to get the default values
+-            mod = sys.modules[modname]
+-            return getattr(mod, name)
++            # in a fresh environment to get the default values
++            # see https://github.com/pylint-dev/astroid/issues/1699
++            mod = sys.modules[modname]
++            val = getattr(mod, name)
++            if isinstance(val, numbers.Number):
++                # special case long integers for Python 2
++                val = long(val)  # pylint: disable=undefined-variable
++            return val
+         try:
+             return self._get_from_modname(modname, name)
+```

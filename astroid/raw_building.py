@@ -1,3 +1,11 @@
+            # in a fresh environment to get the default values
+            # see https://github.com/pylint-dev/astroid/issues/1699
+            mod = sys.modules[modname]
+            val = getattr(mod, name)
+            if isinstance(val, numbers.Number):
+                # special case long integers for Python 2
+                val = long(val)  # pylint: disable=undefined-variable
+            return val
 # Licensed under the LGPL: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html
 # For details: https://github.com/pylint-dev/astroid/blob/main/LICENSE
 # Copyright (c) https://github.com/pylint-dev/astroid/blob/main/CONTRIBUTORS.txt
