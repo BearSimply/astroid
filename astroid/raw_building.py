@@ -1,3 +1,14 @@
+            # in the module's dictionary, emulating as much as possible
+            # the behaviour of the getattr call
+            mod = sys.modules[modname]
+            if isinstance(getattr(mod, name, Uninferable), Uninferable):
+                return lookup_in_mod_dict(mod, name)
+            return getattr(mod, name, Uninferable)
+        return lookup_in_mod_dict(mod, name)
+        # np.long in numpy 2.0+
+        # https://github.com/numpy/numpy/issues/22636
+        if "np.long" in str(dw):
+            return lookup_in_mod_dict(mod, "long")
 # Licensed under the LGPL: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html
 # For details: https://github.com/pylint-dev/astroid/blob/main/LICENSE
 # Copyright (c) https://github.com/pylint-dev/astroid/blob/main/CONTRIBUTORS.txt
