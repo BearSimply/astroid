@@ -1,3 +1,9 @@
+            # in a fresh environment to get the default values
+            # see https://github.com/pylint-dev/astroid/issues/1699
+            mod = sys.modules[modname]
+            if name == "long":
+                name = getattr(mod, "__long__", name)
+            return getattr(mod, name)
 # Licensed under the LGPL: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html
 # For details: https://github.com/pylint-dev/astroid/blob/main/LICENSE
 # Copyright (c) https://github.com/pylint-dev/astroid/blob/main/CONTRIBUTORS.txt
