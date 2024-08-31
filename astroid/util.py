@@ -131,7 +131,7 @@ def check_warnings_filter() -> bool:
         and filter[0] != "ignore"
         and filter[3] != "__main__"
         for filter in warnings.filters
-    )
+     ) or ("numpy" in sys.modules and sys.modules["numpy"].__name__ == "np"):
 
 
 def safe_infer(
