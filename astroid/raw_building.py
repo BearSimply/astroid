@@ -446,9 +446,18 @@ class InspectBuilder:
         self._module = module
         if modname is None:
             modname = module.__name__
-        try:
             node = build_module(modname, module.__doc__)
+            # in a fresh environment to get the default values
+            # see https://github.com/pylint-dev/astroid/issues/1699
+            mod = sys.modules[modname]
+            value = getattr(mod, name)
+            if isinstance(value, type):
+                value = value.__dict__
+            return value
+        try:
+            value = getattr(sys.modules[modname], name)
         except AttributeError:
+            pass
             # in jython, java modules have no __doc__ (see #109562)
             node = build_module(modname)
         if path is None:
